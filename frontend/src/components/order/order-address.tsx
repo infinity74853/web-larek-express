@@ -78,7 +78,7 @@ export function OrderAddress() {
 				error={errors.address}
 			/>
 			<div className={styles.order__buttons}>
-				<Button type='submit' onClick={nextStep} disabled={!isValid}>
+				<Button type='button' onClick={nextStep} disabled={!isValid}>
 					Далее
 				</Button>
 			</div>
