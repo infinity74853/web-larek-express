@@ -17,11 +17,6 @@ export const register = async (
   try {
     const { name, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      throw new ConflictError('Пользователь с таким email уже существует');
-    }
-
     const user = await User.create({ name, email, password });
 
     return res.status(201).json({
@@ -29,7 +24,10 @@ export const register = async (
       name: user.name,
       email: user.email,
     });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.code === 11000 && error.keyPattern?.email) {
+      return next(new ConflictError('Пользователь с таким email уже существует'));
+    }
     return next(error);
   }
 };

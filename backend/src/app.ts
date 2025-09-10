@@ -8,6 +8,7 @@ import { requestLogger, errorLogger } from './middlewares/logger';
 import errorHandler from './middlewares/error-handler';
 import routes from './routes/index';
 import MONGODB_URI from './utils/constants';
+import { NotFoundError } from './controllers/errors';
 
 dotenv.config();
 
@@ -63,6 +64,10 @@ app.get('/', (_req, res) => {
 // 404
 app.use((_req, res) => {
   res.status(404).json({ message: 'Запрошенный ресурс не найден' });
+});
+
+app.use((_req, _res, next) => {
+  next(new NotFoundError('Запрошенный ресурс не найден'));
 });
 
 // Логгер ошибок

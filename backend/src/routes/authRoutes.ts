@@ -25,7 +25,7 @@ const validateLogin = celebrate({
 
 router.post('/register', validateRegister, register);
 router.post('/login', validateLogin, login);
-router.get('/logout', logout);
+router.get('/logout', auth, logout);
 router.get('/user', auth, getUser);
 router.get('/token', refreshToken);
 
