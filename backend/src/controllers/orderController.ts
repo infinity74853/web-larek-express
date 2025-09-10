@@ -69,7 +69,7 @@ const createOrder = async (
       items: itemIds, // возвращаем оригинальный массив, как есть
     };
 
-    res.status(201).json(orderResponse);
+    res.status(200).json(orderResponse);
   } catch (error) {
     next(error);
   }
