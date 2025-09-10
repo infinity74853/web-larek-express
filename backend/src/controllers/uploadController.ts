@@ -5,7 +5,7 @@ import fs from 'fs';
 import { BadRequestError } from './errors';
 
 const TEMP_DIR = process.env.TEMP_DIR || path.join(process.cwd(), 'temp');
-const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(process.cwd(), 'public', 'images');
+const UPLOAD_DIR = process.env.UPLOAD_DIR || path.join(process.cwd(), 'src/public', 'images');
 
 if (!fs.existsSync(TEMP_DIR)) fs.mkdirSync(TEMP_DIR, { recursive: true });
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });

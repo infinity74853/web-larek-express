@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
-import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import path from 'path';
 import { errors } from 'celebrate';
+import express, { Request, Response, NextFunction } from 'express';
 import { requestLogger, errorLogger } from './middlewares/logger';
 import errorHandler from './middlewares/error-handler';
 import routes from './routes/index';
@@ -13,6 +13,24 @@ dotenv.config();
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 3000;
 const app = express();
+
+// Middleware для обработки ошибок парсинга JSON
+app.use((
+  err: any,
+  _req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  // Проверяем, что это ошибка парсинга JSON от Express
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({
+      message: 'Некорректный JSON в теле запроса',
+    });
+  }
+
+  // Передаём все остальные ошибки дальше
+  return next(err);
+});
 
 // читаем origin фронтенда из переменных окружения или дефолт
 const FRONTEND_ORIGIN = process.env.VITE_API_ORIGIN || 'http://localhost:5173';
@@ -31,8 +49,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
 
 // Статические файлы
-app.use(express.static(path.join(__dirname, '..', 'public')));
-app.use('/images', express.static(path.join(__dirname, '..', 'public', 'images')));
+app.use(express.static(path.join(__dirname, '..', 'src/public')));
+app.use('/images', express.static(path.join(__dirname, '..', 'src/public', 'images')));
 
 // Подключение роутов
 app.use(routes);

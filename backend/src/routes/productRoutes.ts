@@ -15,7 +15,7 @@ import auth from '../middlewares/auth';
 const router = express.Router();
 
 router.get('/', getProducts);
-router.post('/', auth, validateProductBody, createProduct);
+router.post('/', validateProductBody, createProduct);
 router.patch('/:productId', auth, validateObjId, validateProductUpdateBody, updateProduct);
 router.delete('/:productId', auth, validateObjId, deleteProduct);
 
